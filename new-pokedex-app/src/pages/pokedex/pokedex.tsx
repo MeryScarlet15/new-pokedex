@@ -13,7 +13,7 @@ const Pokedex: React.FC = (props) => {
           </Heading1>
 
           <Heading3 className="pokedex-subtitle">
-            <p>Me daba pereza poner las cosas bonitas</p>
+            <p>Not beauty but powerful creatures</p>
           </Heading3>
         </div>
       </section>

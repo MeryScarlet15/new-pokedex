@@ -50,11 +50,19 @@ const usePokemonList = () => {
     changePokemonLegth,
     filterPokemon,
     pokemonLengthError,
+    pokemonLength,
   };
 };
 
 const PokedexList: React.FC = () => {
-  const { pokedex, newPokemonList, changePokemonLegth, filterPokemon, pokemonLengthError } = usePokemonList();
+  const {
+    pokedex,
+    newPokemonList,
+    changePokemonLegth,
+    filterPokemon,
+    pokemonLengthError,
+    pokemonLength,
+  } = usePokemonList();
 
   return (
     <PokedexListContainer>
@@ -92,9 +100,17 @@ const PokedexList: React.FC = () => {
               <CardPokemon sprite={key.sprite} name={key.name} number={key.number} />
             </li>
           ))
+        ) : pokemonLength ? (
+          <li>
+            <Text>
+              <p>There's no pokemon</p>
+            </Text>
+          </li>
         ) : (
           <li>
-            <p>Cargando pokemon...</p>
+            <Text>
+              <p>Loading pokemon...</p>
+            </Text>
           </li>
         )}
       </ul>

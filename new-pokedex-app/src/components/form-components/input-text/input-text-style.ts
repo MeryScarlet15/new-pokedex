@@ -7,7 +7,6 @@ const InputTextContainer = styled.div`
   .input-text-wrapper {
     width: 100%;
     height: 48px;
-    padding: 0 16px;
     display: flex;
     align-items: center;
 
@@ -63,9 +62,6 @@ const InputTextContainer = styled.div`
     width: 100%;
     padding-left: 16px;
     margin-top: 8px;
-    font-family: "Roboto Medium";
-    font-size: 12px;
-    line-height: 16px;
     color: ${colors.error};
   }
   &.disabled {
@@ -86,8 +82,8 @@ const InputTextContainer = styled.div`
   }
   &.error {
     .input-text-wrapper {
-      .input-text-label {
-        color: ${colors.error};
+      .input-text {
+        border-bottom: 1px solid ${colors.error};
       }
       .input-text-icon-left {
         svg {

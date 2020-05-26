@@ -4,7 +4,13 @@ import Svg from "../../svg/svg";
 import Label from "../../headings/regular/label";
 import LabelMedium from "../../headings/medium/label-medium";
 
+interface IInputTextArias {
+  label?: string;
+  required?: "true" | "false";
+}
+
 interface InputTextProps {
+  id: string;
   label?: string;
   value?: string;
   errorText?: string;
@@ -19,6 +25,7 @@ interface InputTextProps {
     onFocus?: (event?: any) => void;
   };
   disabled?: boolean;
+  arias?: IInputTextArias;
 }
 
 // Manage only the value
@@ -65,7 +72,7 @@ const useInputText = (props: InputTextProps) => {
 };
 
 const InputText: React.FC<InputTextProps> = (props: InputTextProps) => {
-  const { label, value, errorText, icon, events, disabled, placeholder } = props;
+  const { label, value, errorText, icon, events, disabled, placeholder, arias, id } = props;
   const { handleChange, handleBlur, inputValue } = useInputText(props);
 
   return (
@@ -80,16 +87,19 @@ const InputText: React.FC<InputTextProps> = (props: InputTextProps) => {
         <div className={`input-text-container`}>
           {label && (
             <LabelMedium className="input-text-label">
-              <label>{label}</label>
+              <label htmlFor={id}>{label}</label>
             </LabelMedium>
           )}
           <div className="input-text">
             <input
+              id={id}
               value={inputValue}
               disabled={disabled}
               onChange={(event: any) => handleChange(event)}
               onBlur={(event: any) => handleBlur(event)}
               placeholder={placeholder}
+              aria-label={arias?.label ? arias?.label : label ? label : "input-text"}
+              aria-required={arias?.required || "false"}
             />
           </div>
         </div>
@@ -101,9 +111,9 @@ const InputText: React.FC<InputTextProps> = (props: InputTextProps) => {
       </div>
 
       {errorText && (
-        <div className="input-text-error">
+        <Label className="input-text-error">
           <p>{errorText}</p>
-        </div>
+        </Label>
       )}
     </InputTextContainer>
   );

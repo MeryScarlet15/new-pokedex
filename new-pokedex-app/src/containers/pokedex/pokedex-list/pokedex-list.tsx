@@ -34,7 +34,7 @@ const usePokemonList = () => {
   };
 
   const filterPokemon = () => {
-    if (pokemonLength) {
+    if (pokemonLength && !pokemonLengthError) {
       const pokemonListAux = [...pokedex].slice(0, Number(pokemonLength));
 
       setNewPokemonList([...pokemonListAux]);

@@ -9,12 +9,15 @@ interface IInputTextArias {
   required?: "true" | "false";
 }
 
+export type TInput = "number" | "password" | "text";
+
 interface InputTextProps {
   id: string;
   label?: string;
   value?: string;
   errorText?: string;
   placeholder?: string;
+  type?: TInput;
   icon?: {
     left?: string;
     right?: string;
@@ -72,7 +75,7 @@ const useInputText = (props: InputTextProps) => {
 };
 
 const InputText: React.FC<InputTextProps> = (props: InputTextProps) => {
-  const { label, value, errorText, icon, events, disabled, placeholder, arias, id } = props;
+  const { label, value, errorText, icon, events, disabled, placeholder, arias, id, type } = props;
   const { handleChange, handleBlur, inputValue } = useInputText(props);
 
   return (
@@ -93,6 +96,7 @@ const InputText: React.FC<InputTextProps> = (props: InputTextProps) => {
           <div className="input-text">
             <input
               id={id}
+              type={type || "text"}
               value={inputValue}
               disabled={disabled}
               onChange={(event: any) => handleChange(event)}

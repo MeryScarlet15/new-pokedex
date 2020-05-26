@@ -5,6 +5,7 @@ import CardPokemon from "../../../components/cards/card-pokemon/card-pokemon";
 import Heading1 from "../../../components/headings/regular/heading-1";
 import InputText from "../../../components/form-components/input-text/input-text";
 import MainButton from "../../../components/buttons/main-button/main-button";
+import Text from "../../../components/headings/regular/text";
 
 const usePokemonList = () => {
   const [pokedex, setPokedex] = useState([]);
@@ -12,6 +13,8 @@ const usePokemonList = () => {
   const [newPokemonList, setNewPokemonList] = useState([]);
 
   const [pokemonLength, setPokemonLength] = useState<string>("");
+
+  const [pokemonLengthError, setPokemonLengthError] = useState<string>("");
 
   useEffect(() => {
     getPokemonRequest().then((response: any) => {
@@ -21,14 +24,24 @@ const usePokemonList = () => {
     });
   }, []);
 
-  const filterPokemon = () => {
-    const pokemonListAux = [...pokedex].slice(0, Number(pokemonLength));
-
-    setNewPokemonList([...pokemonListAux]);
+  const changePokemonLegth = (newLength: string) => {
+    if (newLength) {
+      setPokemonLength(newLength);
+      setPokemonLengthError("");
+    } else {
+      setPokemonLengthError("Required field");
+    }
   };
 
-  const changePokemonLegth = (newLength: string) => {
-    setPokemonLength(newLength);
+  const filterPokemon = () => {
+    if (pokemonLength) {
+      const pokemonListAux = [...pokedex].slice(0, Number(pokemonLength));
+
+      setNewPokemonList([...pokemonListAux]);
+      setPokemonLengthError("");
+    } else {
+      setPokemonLengthError("Required field");
+    }
   };
 
   return {
@@ -36,22 +49,31 @@ const usePokemonList = () => {
     newPokemonList,
     changePokemonLegth,
     filterPokemon,
+    pokemonLengthError,
   };
 };
 
 const PokedexList: React.FC = () => {
-  const { pokedex, newPokemonList, changePokemonLegth, filterPokemon } = usePokemonList();
+  const { pokedex, newPokemonList, changePokemonLegth, filterPokemon, pokemonLengthError } = usePokemonList();
 
   return (
     <PokedexListContainer>
       <Heading1 className="pokedex-list-title">
-        <h2>Pokemon sprites</h2>
+        <h2>{newPokemonList.length} pokemon sprites</h2>
       </Heading1>
-      <div className="pokemon-filters">
+      <form
+        className="pokemon-filters"
+        onSubmit={(event) => {
+          event?.preventDefault();
+          filterPokemon();
+        }}
+      >
         <div className="pokemon-filter-input">
           <InputText
             id="pokemon-filter-input"
+            type="number"
             label="¿How many pokemon do you want to see?"
+            errorText={pokemonLengthError}
             events={{
               onChange: (event) => changePokemonLegth(event.target.value),
             }}
@@ -61,7 +83,8 @@ const PokedexList: React.FC = () => {
         <div className="pokemon-filter-button">
           <MainButton title="Filter" height="medium" state="success" onClick={() => filterPokemon()} />
         </div>
-      </div>
+      </form>
+
       <ul className="pokemon-list">
         {newPokemonList.length > 0 ? (
           newPokemonList.map((key: any) => (
